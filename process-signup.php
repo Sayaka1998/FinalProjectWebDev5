@@ -1,5 +1,13 @@
 <?php
 
+//Include database file /database.php (depends of what is the name of our database)
+$mysqli = require __DIR__ . " ";
+
+function generateUniqueID() {
+    // Generate a unique ID based on the current timestamp
+    return uniqid("user_", true);
+}
+
 //Function to validate user input
 function validateInput($name, $email, $password, $passwordConfirmation) {
     //Check if any of the required fields is empty
@@ -17,19 +25,22 @@ function validateInput($name, $email, $password, $passwordConfirmation) {
         die("Password must be at least 8 characters and contain at least one letter and one number");
     }
 
-    //Check if password and password match
+    //Check if password match
     if ($password !== $passwordConfirmation) {
         die("Passwords do not match");
     }
 }
 
-//Function to insert user into the database
+//Function to insert user into database
 function insertUser($name, $email, $password, $mysqli) {
     //Hash the password using bcrypt (saw a guy explaining why we should use)
     $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
+    // Generate a unique ID for the user
+    $userID = generateUniqueID();
+
     //Query to insert user into the database
-    $sql = "INSERT INTO user (name, email, password_hash) VALUES (?, ?, ?)";
+    $sql = "INSERT INTO user (id, name, email, password_hash) VALUES (?, ?, ?, ?)";
     $stmt = $mysqli->prepare($sql);
 
     //Check if the SQL query was successful
@@ -38,7 +49,7 @@ function insertUser($name, $email, $password, $mysqli) {
     }
 
     //Bind parameters and execute
-    $stmt->bind_param("sss", $name, $email, $passwordHash);
+    $stmt->bind_param("ssss", $userID, $name, $email, $passwordHash);
 
     if ($stmt->execute()) {
         //Redirect user to a success page /success-signup.php or html
@@ -54,12 +65,9 @@ function insertUser($name, $email, $password, $mysqli) {
     }
 }
 
-//Include database file /database.php (depends of what is the name of our database)
-$mysqli = require __DIR__ . " ";
-
 //Form submission
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    //Get user input in the form
+   //Get user input in the form
     $name = $_POST["name"];
     $email = $_POST["email"];
     $password = $_POST["password"];
