@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration</title>
+</head>
+
+<body>
+    <h2>User Registration</h2>
+
+    <form action="signup.php" method="POST">
+        <label for="type">Type:</label>
+        <select name="type" id="type">
+            <option value="Customer">Customer</option>
+            <option value="Staff">Staff</option>
+            <option value="Admin">Admin</option>
+        </select><br>
+    
+        <label for="fname">First Name:</label>
+        <input type="text" name="fname" required><br>
+    
+        <label for="lname">Last Name:</label>
+        <input type="text" name="lname" required><br>
+    
+        <label for="email">Email:</label>
+        <input type="email" name="email" required><br>
+    
+        <label for="pass">Password:</label>
+        <input type="password" name="pass" required><br>
+    
+        <input type="submit" value="Register">
+    </form>    
+
+</body>
+
+</html>
