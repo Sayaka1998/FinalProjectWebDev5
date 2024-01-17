@@ -1,0 +1,13 @@
+
+{
+    "customers": [
+      {"email": "customer@example.com", "password": "$2y$10$2ax7z8rENxKoGPJIS3Sk8eWTMSNLZNGpRoDOdZsHgDgeRskD2G3Di"}
+    ],
+    "staff": [
+      {"email": "staff@example.com", "password": "$2y$10$1xelzjJoWBzPlkPewN9iZ.Gb/mcy2YY8LWMjFn25W.dkl6yJ8aTmi"}
+    ],
+    "admins": [
+      {"email": "admin@example.com", "password": "$2y$10$NRGMPKIcRcDFRzRA./RlB.PDFy98v9ArdCJXxkx0UTnLnpd3iycTe"}
+    ]
+  }
+  

@@ -1,0 +1,34 @@
+<!-- HTML form -->
+<html>
+<head>
+    <title>User Login</title>
+</head>
+<body>
+    <form name="frmUser" method="post" action="" align="center">
+        <!-- Display the error message if any -->
+        <div class="message"><?php if ($message != "") { echo $message; } ?></div>
+
+        <h3 align="center">Enter Login Details</h3>
+        
+        <!-- Add a dropdown for user type -->
+        User Type:<br>
+        <select name="user_type">
+            <option value="customer">Customer</option>
+            <option value="staff">Staff</option>
+            <option value="admin">Admin</option>
+        </select>
+        <br>
+
+        <!-- Input fields for email and password -->
+        Email:<br>
+        <input type="text" name="email">
+        <br>
+        Password:<br>
+        <input type="password" name="password">
+        <br><br>
+        <!-- Submit and reset buttons for the form -->
+        <input type="submit" name="submit" value="Submit">
+        <input type="reset">
+    </form>
+</body>
+</html>
