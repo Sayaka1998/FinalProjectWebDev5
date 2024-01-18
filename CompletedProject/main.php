@@ -14,18 +14,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             session_id($_POST["sid"]);
             session_start();
             // Check if the last activity time is set
-            if (isset($_SESSION["last_activity"])) {
-                $timeout_duration = 600; // 10 minutes
-                $inactive_duration = time() - $_SESSION["last_activity"];
-                // Check if the user has been inactive for more than the specified timeout duration
-                if ($inactive_duration >= $timeout_duration) {
-                    // Session has timed out, destroy the session and redirect to login
-                    session_unset();
-                    session_destroy();
-                } else {
-                    // Update the last activity timestamp
-                    $_SESSION["last_activity"] = time() + 600;
-                }
+            if (isset($_SESSION["last_activity"]) && $_SESSION["last_activity"] > time()) {
+                // Update the last activity timestamp
+                $_SESSION["last_activity"] = time() + 600;
+            } else {
+                session_unset();
+                session_destroy();
             }
         }
 
