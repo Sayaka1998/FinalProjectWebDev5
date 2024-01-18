@@ -4,19 +4,24 @@ import httpSrv from "../services/httpSrv";
 import StaffRow from "./StaffRow";
 function StaffApproval() {
     const nav = useNavigate();
-    useEffect(()=>{
+    useEffect(()=>{ // if the user doesn't log in,  back to the login page 
         if(sessionStorage.getItem("sid") == undefined) {
             nav("/");
         }
     });
 
-    const appr = (staffData) => {
+    const appr = (staffData) => { // send the user data to the backend to approve it
         let data = new FormData();
         data.append("approve",JSON.stringify(staffData));
         data.append("sid",sessionStorage.getItem("sid"));
         httpSrv.approve(data).then(
             res => {
-               alert(res.data);
+                if(res.data === "Login first.") {
+                    alert(res.data);
+                    nav("/");
+                } else {
+                    alert(res.data);
+                }
             },
             rej => {
                 alert(rej);
@@ -26,14 +31,19 @@ function StaffApproval() {
 
     const [staffs, setStaffs] = useState([]);
 
-    const loadAlist = () => {
+    const loadAlist = () => { // load the user data which are pending
         if (staffs.length === 0) {
             let data = new FormData();
             data.append("sid",sessionStorage.getItem("sid"));
             httpSrv.alist(data).then(
                 res => {
-                    if(Array.isArray(res.data)) {
+                    if(Array.isArray(res.data)) { // set the user data as the staff data
                         setStaffs(res.data);
+                    } else if(res.data === "Login first."){
+                        alert(res.data);
+                        nav("/");
+                    } else {
+                        alert(res.data);
                     }
                 },
                 rej => {
@@ -49,7 +59,7 @@ function StaffApproval() {
             <div className="row justify-content-center align-items-center g-2">
                 <div className="col">
                     <div className="table-responsive">
-                        <table className="table table-primary">
+                        <table className="table table-secondary">
                             <thead>
                                 <tr>
                                     <th>Staff ID</th>

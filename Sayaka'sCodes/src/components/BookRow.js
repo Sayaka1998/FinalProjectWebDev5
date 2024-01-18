@@ -1,5 +1,5 @@
 function BookRow(props) {
-    const btnHandler = () => {
+    const btnHandler = () => { // return the selected book data to the book list
         props.borrow(props.book);
     } 
     return(
@@ -8,7 +8,13 @@ function BookRow(props) {
             <td>{props.book.bname}</td>
             <td>{props.book.author}</td>
             <td>{props.book.category}</td>
-            <td><button type="button" className="btn btn-outline-secondary" disabled={props.book.status == "unavailable"} onClick={btnHandler}>{props.book.status}</button></td>            
+            <td>
+                {
+                    sessionStorage.getItem("type") != "Customer" ?
+                    (props.book.status):
+                    <button type="button" className="btn btn-outline-secondary" disabled={props.book.status == "unavailable"} onClick={btnHandler}>{props.book.status}</button>
+                }
+            </td>            
         </tr>
     )
 }

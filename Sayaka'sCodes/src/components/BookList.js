@@ -6,6 +6,7 @@ import CartRow from "./CartRow";
 function Blist() {
     const nav = useNavigate();
     useEffect(()=>{
+        // if the user doesn't log in, back to the login page
         if(sessionStorage.getItem("sid") == undefined) {
             nav("/");
         }
@@ -15,31 +16,37 @@ function Blist() {
     const addCart = (newBook) => {
         let flag = true;
         for(let book of cart) {
+            // check if the book is already added to the user cart
             if(book.isbn == newBook.isbn){
                 flag = false;
                 return false;
             }
         }
-        if(flag) {
+        if(flag) { // if the book data doesn't exist in the cart, add the book to the cart
             setCart(prevCart=>{
                 return [...prevCart,newBook];
             })
         }
     } 
 
-    const rmvBook = (rmvIdx) => {
+    const rmvBook = (rmvIdx) => { // remove the book from the cart
         cart.splice(rmvIdx,1);
         setCart([...cart]);
     }
 
     const borrow = () => {
-        if(cart.length != 0) {
+        if(cart.length != 0) { // if some books in the cart 
             let data = new FormData();
-            data.append("book",JSON.stringify(cart));
+            data.append("book",JSON.stringify(cart)); // book data array 
             data.append("sid",sessionStorage.getItem("sid"));
             httpSrv.borrow(data).then(
                 res=>{
-                    alert(res.data);
+                    if(res.data === "Login first.") {
+                        alert(res.data);
+                        nav("/");
+                    } else {
+                        alert(res.data);
+                    }
                 },
                 rej => {
                     alert(rej);
@@ -49,16 +56,18 @@ function Blist() {
     }
 
     const [books, setBooks] = useState([]);
-    if (books.length == 0) {
+    if (books.length == 0) { // load the book in the library from the back-end
         let data = new FormData();
         data.append("sid",sessionStorage.getItem("sid"));
         httpSrv.blist(data).then(
             res => {
                 if(Array.isArray(res.data)) {
                     setBooks(res.data);
+                } else if(res.data === "Login first.") {
+                    alert(res.data);
+                    nav("/");
                 } else {
                     alert(res.data);
-                    nav("/")
                 }
             },
             rej => {
@@ -73,7 +82,7 @@ function Blist() {
                 <div className="row justify-content-center align-items-center g-2">
                     <div className="col">
                         <div className="table-responsive">
-                            <table className="table table-primary">
+                            <table className="table table-success">
                                 <thead>
                                     <tr>
                                         <th scope="col">ISBN</th>
@@ -90,9 +99,9 @@ function Blist() {
                         </div>
                     </div>
 
-                    <div className="col">
+                    <div className="col" style={{display:(sessionStorage.getItem("type") != "Customer") ? "none":"block"}}>
                         <div className="table-responsive">
-                            <table className="table table-primary">
+                            <table className="table table-secondary">
                                 <thead>
                                     <tr>
                                         <th>ISBN</th>

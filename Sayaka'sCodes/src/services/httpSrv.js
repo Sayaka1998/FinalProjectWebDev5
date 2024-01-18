@@ -1,6 +1,9 @@
 import http from "../httpcommon";
 
 class httpSrv {
+    check(data) {
+        return http.post("/check",data);
+    }
     login(data) {
         return http.post("/login", data);
     }

@@ -1,5 +1,5 @@
 function StaffRow(props) {
-    const approve = () => {
+    const approve = () => { // return the user data to the staff approval
         props.approve(props.staff);
     }
 

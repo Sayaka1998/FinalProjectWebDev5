@@ -1,5 +1,5 @@
 function CartRow(props) {
-    const delBook = () => {
+    const delBook = () => { // return the selected book data to the book list
         props.rmv(props.idx);
     }
     return(

@@ -10,24 +10,25 @@ function Login() {
 
     useEffect(() => {
         if(sid) {
+            // store the session id and the user type to the session storage
             sessionStorage.setItem("sid", sid);
             sessionStorage.setItem("type",type);
-            if(type === "customer") {
+            if(type === "Customer") { // if the user type is customer, jump to the book list page
                 nav("/blist");
-            } else {
+            } else { // if the user type is staff or admin, jump to the book registration page
                 nav("/breg");
             }
         }
     },[sid,type,nav]);
     
-    const submitHandle = (e) => {
+    const submitHandle = (e) => { // send the input user data to the back-end 
         e.preventDefault();
         let data = new FormData(e.target);
         httpSrv.login(data).then(
             res => {
-                if(typeof res.data === 'string') {
+                if(typeof res.data === 'string') { // if res.data if a message
                     alert(res.data);
-                } else {
+                } else { // if res.data is a associate array, set it as session id and type
                     setSid(res.data.sid);
                     setType(res.data.type);
                 }
