@@ -7,7 +7,7 @@ $blockStaffLogin = false;
 
 // Check if the form is submitted and if the "email" key exists in $_POST
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["email"])) {
-    // Replace 'localhost', 'root', '', and 'customer_tb' with your actual database connection details
+    
     $conn = new mysqli('localhost', 'root', '', 'customer_tb');
 
     // Check if the "password" key exists in $_POST
@@ -37,8 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["email"])) {
                         $_SESSION["email"] = $row['email'];
                         $_SESSION["last_activity"] = time();
 
-                        // Add your code here for actions after a successful login
-                        // For example, you can redirect to a welcome page
+                        // Redirect to a welcome page or perform other actions after a successful login
                         header("Location: welcome.php");
                         exit(); // Ensure that no further code is executed after the redirect
                     }
@@ -49,11 +48,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["email"])) {
                     $message = "Invalid Password! Remaining attempts: {$remaining_attempts}";
                 }
             } else {
-                // Account is locked
+                // Account is locked due to too many unsuccessful login attempts
                 $message = "Account is locked due to too many unsuccessful login attempts. Please try again later.";
             }
         } else {
-            // If no matching record is found, set an error message
+            // If no matching record is found, an error message
             $message = "Invalid Email or Type!";
         }
     }
@@ -69,7 +68,7 @@ if (isset($_SESSION["id"])) {
 
         // Check if the user has been inactive for more than the specified timeout duration
         if ($inactive_duration >= $timeout_duration) {
-            // Session has timed out, destroy the session and redirect to login
+            // Session has timed out, destroy the session and redirect 
             session_unset();
             session_destroy();
             header("Location: login.php");
@@ -92,11 +91,9 @@ if ($blockStaffLogin) {
 </head>
 <body>
     <form name="frmUser" method="post" action="" align="center">
-        <!-- Display the error message if any -->
         <div class="message"><?php if ($message != "") { echo $message; } ?></div>
 
         <h3 align="center">Enter Login Details</h3>
-        <!-- Input fields for email, password, and type -->
         Email:<br>
         <input type="text" name="email">
         <br>
@@ -110,7 +107,6 @@ if ($blockStaffLogin) {
             <option value="admin">Admin</option>
         </select>
         <br><br>
-        <!-- Submit and reset buttons for the form -->
         <input type="submit" name="submit" value="Submit">
         <input type="reset">
     </form>
